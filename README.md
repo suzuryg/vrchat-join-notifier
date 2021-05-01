@@ -5,23 +5,27 @@ VRChat を起動中、同じインスタンスへの join を通知するコマ�
 ## Usage
 
 ```
-$ va --filter myFriendName --range 48
-2021-1-1 00:00:00 join myFriendName
-2021-1-1 00:00:05 leave myFriendName
-2021-1-2 00:00:00 join myFriendName
-2021-1-2 00:00:05 leave myFriendName
+$ ./bin/run
 ```
 
 ### Install
 
 Node.js が必要です。
 
+依存モジュールの一部が GitHub Packages で公開されています。 `npm install` を実行する前に、以下のコマンドを実行してください。
+
 ```
+$ npm config set @kamakiri01:registry=https://npm.pkg.github.com # 初回のみ
+```
+
+```
+git clone git@github.com:kamakiri01/vrchat-join-notifier.git
+cd vrchat-join-notifier
 $ npm install
 $ npm run build
 ```
 
-`va` コマンドとしてグローバルにインストールしたい場合、
+`vn` コマンドとしてグローバルにインストールする場合、
 
 ```
 $ npm install -g
@@ -36,29 +40,14 @@ $ ./bin/run
 または、グローバルにインストールした場合、
 
 ```
-$ va
+$ vn
 ```
-
-初回実行時、ツールのディレクトリに `db.json` を生成します。
 
 ### Options
 
-* `-f --filter <words...>`:
-  filter result with ignore case words. when specify space separeted words, use "or" matching
-* `-cf --case-filter <words...>`:
-  filter result with no ignore case words. when specify space separeted words, use "or" matching
-* `-i --import <dir>`:
-  log directory to additional import
-* `-V --verbose`:
-  display full log details
-* `-r --range <hours>`:
-  specify show range to display (default: "24")
-* `-v --version`:
-  output the current version
-* `-h --help`:
-  display help for command
-  
-### Module
-
-コマンドラインクライアントとツール本体を分離しています。
-本体を直接読み込むことで、node.js向けログビューワモジュールとして利用することもできます。
+* `-s --specific-names <name...>`:
+  specific notification names
+* `-se, --specific-exec <command>`:
+  exec command when match specific names
+* `--interval <sec>`
+  specify check interval
