@@ -6,7 +6,7 @@ export const ToastAudioType = {
 }
 export type ToastAudioType = typeof ToastAudioType[keyof typeof ToastAudioType];
 
-export function showToast(message: string, title: string, audioType: ToastAudioType): void {
+export function showToast(message: string, title: string, audioType: ToastAudioType = ToastAudioType.Default): void {
     const toastParam: PowertoastParams = {
         title,
         message,

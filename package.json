@@ -16,7 +16,7 @@
   "author": "kamakiri01",
   "license": "MIT",
   "dependencies": {
-    "@kamakiri01/vrchat-activity-viewer": "^2.0.0",
+    "@kamakiri01/vrchat-activity-viewer": "^3.0.0",
     "commander": "^6.2.0",
     "powertoast": "^1.2.3"
   },

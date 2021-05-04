@@ -1,6 +1,7 @@
 import * as path from "path";
+import * as fs from "fs";
 import { execSync } from "child_process";
-import { loadDatabase, ActivityType, MoveActivityLog } from "@kamakiri01/vrchat-activity-viewer";
+import { ActivityType, MoveActivityLog, findLatestVRChatLogFullPath, parseVRChatLog } from "@kamakiri01/vrchat-activity-viewer";
 import { generateFormulatedTime } from "./util";
 import { showToast, ToastAudioType } from "./notifier/toast";
 import { showXSOverlayNotification } from "./notifier/xsoverlayNotification";
@@ -23,11 +24,11 @@ const defaultParameterObject: appParameterObject = {
 
 export function app(param: appParameterObject) {
     param = completeParameterObject(param);
+    showInitNotification(param);
 
     const interval = param.interval ? parseInt(param.interval, 10) : 2;
     let latestJoinedUnixTime = Date.now();
     setInterval(() => {
-        execSync("va");
         latestJoinedUnixTime = cronFunc(latestJoinedUnixTime, param);
     }, interval * 1000);
 }
@@ -37,18 +38,18 @@ function completeParameterObject (param: appParameterObject): appParameterObject
 }
 
 function cronFunc(latestJoinedUnixTime: number, param: appParameterObject): number {
-    const userHome = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]!;
-    const dbPath = path.join(userHome, ".vrchatActivityViewer", "db.json");
-    const db = loadDatabase(dbPath);
-
-    const newJoinLog = db.log
+    const filePath = findLatestVRChatLogFullPath();
+    const latestLog = parseVRChatLog(
+        fs.readFileSync(path.resolve(filePath), "utf8"),
+        filePath);
+    const newJoinLog = latestLog
         .filter(e => e.activityType === ActivityType.Join)
         .filter(e => e.date > latestJoinedUnixTime);
 
     if (newJoinLog.length > 0) {
         const joinUserNames = newJoinLog.map(e => (<MoveActivityLog>e).userData.userName);
         const isSpecific = isIncludeSpecificNames(joinUserNames, param.specificNames || []);
-        showNotification(joinUserNames, isSpecific);
+        showJoinNotification(joinUserNames, isSpecific);
 
         if (isSpecific && param.specificExec) {
             execSpecific(joinUserNames, param.specificExec);
@@ -67,7 +68,13 @@ function isIncludeSpecificNames(names: string[], specificNames: string[]): boole
     return matchedNames.length > 0;
 }
 
-function showNotification(joinUserNames: string[], isSpecific: boolean): void {
+function showInitNotification(param: appParameterObject): void {
+    console.log("notifier running...", param.specificNames ? "specificNames: " + param.specificNames.join(" ") : "");
+    showToast("start.", "VRChat Join Notifier");
+    showXSOverlayNotification("start." , "VRChat Join Notifier");
+}
+
+function showJoinNotification(joinUserNames: string[], isSpecific: boolean): void {
     const message = joinUserNames.join(", ");
 
     // cli
