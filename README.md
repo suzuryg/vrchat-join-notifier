@@ -5,7 +5,7 @@ VRChat を起動中、同じインスタンスへの join を通知するコマ�
 ## Usage
 
 ```
-$ ./bin/run -s friendName1 -se "echo 
+$ ./bin/run -s mySpecialFriendName -se "echo %{{names}}"
 ```
 
 ### Install
