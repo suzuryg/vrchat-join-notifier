@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { app } from "./app";
+import { app } from "./app/app";
 
 program
     .version("0.0.1", "-v, --version", "output the current version");

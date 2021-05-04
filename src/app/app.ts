@@ -1,15 +1,28 @@
 import * as path from "path";
 import { execSync } from "child_process";
-import * as powertoast from "powertoast";
 import { loadDatabase, ActivityType, MoveActivityLog } from "@kamakiri01/vrchat-activity-viewer";
+import { generateFormulatedTime } from "./util";
+import { showToast, ToastAudioType } from "./notifier/toast";
+import { showXSOverlayNotification } from "./notifier/xsoverlayNotification";
 
 export interface appParameterObject {
     interval?: string;
     specificNames?: string[];
     specificExec?: string;
+    isToast?: boolean;
+    isXSOverlay?: boolean;
+}
+
+const defaultParameterObject: appParameterObject = {
+    interval: "2",
+    specificNames: null!,
+    specificExec: null!,
+    isToast: true,
+    isXSOverlay: true
 }
 
 export function app(param: appParameterObject) {
+    param = completeParameterObject(param);
 
     const interval = param.interval ? parseInt(param.interval, 10) : 2;
     let latestJoinedUnixTime = Date.now();
@@ -17,6 +30,10 @@ export function app(param: appParameterObject) {
         execSync("va");
         latestJoinedUnixTime = cronFunc(latestJoinedUnixTime, param);
     }, interval * 1000);
+}
+
+function completeParameterObject (param: appParameterObject): appParameterObject {
+    return Object.assign(JSON.parse(JSON.stringify(defaultParameterObject)), param);
 }
 
 function cronFunc(latestJoinedUnixTime: number, param: appParameterObject): number {
@@ -44,14 +61,6 @@ function cronFunc(latestJoinedUnixTime: number, param: appParameterObject): numb
     return latestJoinedUnixTime;
 }
 
-function generateFormulatedTime(): string {
-    const dateOption: Intl.DateTimeFormatOptions = {
-        year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", second: "2-digit"
-    };
-    return (new Date()).toLocaleString(undefined, dateOption);
-}
-
 function isIncludeSpecificNames(names: string[], specificNames: string[]): boolean {
     const lowerNames = names.map(name => name.toLowerCase());
     const matchedNames = specificNames.filter(specificName => lowerNames.find(name => name.indexOf(specificName.toLowerCase()) !== -1));
@@ -59,16 +68,17 @@ function isIncludeSpecificNames(names: string[], specificNames: string[]): boole
 }
 
 function showNotification(joinUserNames: string[], isSpecific: boolean): void {
-    const time = generateFormulatedTime();
+    const message = joinUserNames.join(", ");
 
-    const toastParam: PowertoastParams = {
-        title: "VRChat Notice",
-        message: joinUserNames.join(", "),
-        icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png",
-        audio: isSpecific ? "ms-winsoundevent:Notification.Reminder" : "ms-winsoundevent:Notification.Default",
-    };
+    // cli
+    const time = generateFormulatedTime();
     console.log(time + " join: " + joinUserNames);
-    powertoast(toastParam);
+
+    // toast
+    showToast(message, "join notice", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
+
+    // XSOverlay
+    showXSOverlayNotification(message, "join notice");
 }
 
 function execSpecific(joinUserNames: string[], execCommand: string) {
