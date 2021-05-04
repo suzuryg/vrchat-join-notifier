@@ -29,7 +29,9 @@ jobs:
             ${{ env.cache-version }}-${{ runner.os }}-build-
             ${{ env.cache-version }}-${{ runner.os }}-
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm config set @kamakiri01:registry=https://npm.pkg.github.com
+          npm install
       - name: Build
         run: npm run build
       - name: Get version of package.json
