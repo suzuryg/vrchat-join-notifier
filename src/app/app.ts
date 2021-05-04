@@ -69,9 +69,9 @@ function isIncludeSpecificNames(names: string[], specificNames: string[]): boole
 }
 
 function showInitNotification(param: appParameterObject): void {
-    console.log("notifier running...", param.specificNames ? "specificNames: " + param.specificNames.join(" ") : "");
-    showToast("start.", "VRChat Join Notifier");
-    showXSOverlayNotification("start." , "VRChat Join Notifier");
+    console.log("notifier running", param.specificNames ? "specificNames: " + param.specificNames.join(" ") : "");
+    showToast("running", "VRChat Join Notifier");
+    showXSOverlayNotification("running" , "VRChat Join Notifier");
 }
 
 function showJoinNotification(joinUserNames: string[], isSpecific: boolean): void {
