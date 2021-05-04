@@ -72,6 +72,6 @@ function showNotification(joinUserNames: string[], isSpecific: boolean): void {
 }
 
 function execSpecific(joinUserNames: string[], execCommand: string) {
-    const stdout = execSync(execCommand.replace("&{{names}}", joinUserNames.join(" ")));
-    console.log("[LOG] ", stdout.toString());
+    const stdout = execSync(execCommand.replace("%{{names}}", joinUserNames.join(" ")));
+    console.log(stdout.toString());
 }
