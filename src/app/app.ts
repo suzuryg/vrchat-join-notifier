@@ -22,7 +22,7 @@ const defaultParameterObject: appParameterObject = {
     isXSOverlay: true
 }
 
-export function app(param: appParameterObject) {
+export function app(param: appParameterObject): void {
     param = completeParameterObject(param);
     showInitNotification(param);
 

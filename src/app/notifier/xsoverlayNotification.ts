@@ -21,8 +21,8 @@ const socket = dgram.createSocket("udp4");
     sourceApp: string;
 }
 
-export function showXSOverlayNotification(message: string, title: string) {
-    let messageobject: XSOverlayMessageObject = {
+export function showXSOverlayNotification(message: string, title: string): void {
+    const messageobject: XSOverlayMessageObject = {
         messageType: 1,
         title,
         content: message,
@@ -35,8 +35,8 @@ export function showXSOverlayNotification(message: string, title: string) {
         icon: "default",
         opacity: 1
     }
-    let data = Buffer.from(JSON.stringify(messageobject));
-    socket.send(data, 0, data.length, PORT, BROADCAST_IP, (error, bytes) => {
+    const data = Buffer.from(JSON.stringify(messageobject));
+    socket.send(data, 0, data.length, PORT, BROADCAST_IP, (error) => {
         if (error) console.log(error);
     })
 }
