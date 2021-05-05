@@ -26,7 +26,7 @@ export function showXSOverlayNotification(message: string, title: string): void 
         messageType: 1,
         title,
         content: message,
-        height: 120,
+        height: 100,
         sourceApp: "vrchat-join-notifier",
         timeout: 3,
         volume: 0.5,
