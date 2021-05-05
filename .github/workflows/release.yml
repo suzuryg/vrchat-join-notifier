@@ -35,8 +35,8 @@ jobs:
         run: npm run build
       - name: Create zip
         run: |
-          ./node_modules/.bin/nexe lib/winExe.js --target 12.18.2 -o vrchat-join-notifier/vrchat-join-notifier-v${{ github.event.inputs.version }}-win10-x64.exe
-          copy ./json/join-notifier.json ./vrchat-join-notifier/join-notifier.json
+          npm run deploy:win:exe
+          npm run deploy:win:text
           powershell compress-archive vrchat-join-notifier/ vrchat-join-notifier-v${{ github.event.inputs.version }}-win10-x64.zip
       - name: Create a GitHub release
         id: create_release

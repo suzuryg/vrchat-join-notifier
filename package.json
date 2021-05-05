@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint \"./src/**/*.ts\"",
-    "deploy:win:exe": "nexe lib/winExe.js --target 12.18.2 -o hoge/fuga.exe",
-    "deploy:win:json": "cpx ./text/** ./vrchat-join-notifier/"
+    "deploy:win:exe": "nexe lib/winExe.js --target 12.18.2 -o vrchat-join-notifier/vrchat-join-notifier.exe",
+    "deploy:win:text": "cpx ./text/** ./vrchat-join-notifier/"
   },
   "bin": {
     "vn": "bin/run"
