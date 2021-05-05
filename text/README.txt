@@ -58,3 +58,4 @@ XSOverlay通知のON/OFFを切り替えます。
 
 頒布元
 https://github.com/kamakiri01/vrchat-join-notifier
+https://iwanuki.booth.pm/items/2947584
