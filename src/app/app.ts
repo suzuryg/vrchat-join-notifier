@@ -22,7 +22,7 @@ const defaultParameterObject: appParameterObject = {
     isXSOverlay: true
 }
 
-export function app(param: appParameterObject) {
+export function app(param: appParameterObject): void {
     param = completeParameterObject(param);
     showInitNotification(param);
 
@@ -49,7 +49,7 @@ function cronFunc(latestJoinedUnixTime: number, param: appParameterObject): numb
     if (newJoinLog.length > 0) {
         const joinUserNames = newJoinLog.map(e => (<MoveActivityLog>e).userData.userName);
         const isSpecific = isIncludeSpecificNames(joinUserNames, param.specificNames || []);
-        showJoinNotification(joinUserNames, isSpecific);
+        showJoinNotification(joinUserNames, isSpecific, param);
 
         if (isSpecific && param.specificExec) {
             execSpecific(joinUserNames, param.specificExec);
@@ -70,22 +70,23 @@ function isIncludeSpecificNames(names: string[], specificNames: string[]): boole
 
 function showInitNotification(param: appParameterObject): void {
     console.log("notifier running", param.specificNames ? "specificNames: " + param.specificNames.join(" ") : "");
-    showToast("running", "VRChat Join Notifier");
-    showXSOverlayNotification("running" , "VRChat Join Notifier");
+    if (param.isToast)
+        showToast("running", "VRChat Join Notifier");
+    if (param.isXSOverlay)
+        showXSOverlayNotification("running" , "VRChat Join Notifier");
 }
 
-function showJoinNotification(joinUserNames: string[], isSpecific: boolean): void {
+function showJoinNotification(joinUserNames: string[], isSpecific: boolean, param: appParameterObject): void {
     const message = joinUserNames.join(", ");
 
-    // cli
     const time = generateFormulatedTime();
     console.log(time + " join: " + joinUserNames);
 
-    // toast
-    showToast(message, "join notice", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
+    if (param.isToast)
+        showToast(message, "join notice", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
 
-    // XSOverlay
-    showXSOverlayNotification(message, "join notice");
+    if (param.isXSOverlay)
+        showXSOverlayNotification(message, "join notice");
 }
 
 function execSpecific(joinUserNames: string[], execCommand: string) {

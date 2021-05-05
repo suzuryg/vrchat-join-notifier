@@ -1,14 +1,15 @@
 {
   "name": "vrchat-join-notifier",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint \"./src/**/*.ts\"",
+    "deploy:win": "npm run deploy:win:exe && npm run deploy:win:text && npm run deploy:win:zip",
     "deploy:win:exe": "nexe lib/winExe.js --target 12.18.2 -o vrchat-join-notifier/vrchat-join-notifier.exe",
     "deploy:win:text": "cpx ./text/** ./vrchat-join-notifier/",
-    "deploy:win:zip": "powershell compress-archive vrchat-join-notifier/ vrchat-join-notifier.zip"
+    "deploy:win:zip": "powershell compress-archive vrchat-join-notifier/ vrchat-join-notifier.zip -Force"
   },
   "bin": {
     "vn": "bin/run"
@@ -25,7 +26,10 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.43",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
     "cpx": "^1.5.0",
+    "eslint": "^7.25.0",
     "nexe": "^3.3.7",
     "typescript": "^4.2.3"
   }
