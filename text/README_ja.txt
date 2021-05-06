@@ -70,4 +70,3 @@ VRChatのアップデートにより、不測のタイミングで本ツール�
 
 頒布元
 https://iwanuki.booth.pm/items/2947584
-https://github.com/kamakiri01/vrchat-join-notifier

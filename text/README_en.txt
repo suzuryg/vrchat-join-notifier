@@ -70,4 +70,4 @@ The creator is not responsible for any and all problems or damages caused by the
 ## Link
 
 https://iwanuki.booth.pm/items/2947584
-https://github.com/kamakiri01/vrchat-join-notifier
+
