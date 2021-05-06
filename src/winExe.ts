@@ -1,15 +1,6 @@
-import * as fs from "fs";
 import * as path from "path";
-import { app, appParameterObject } from "./app/app";
+import { app } from "./app/app";
+import { readConfigFile } from "./app/util/util";
 
-export function readConfigFile(): appParameterObject {
-    try {
-        const config: appParameterObject = JSON.parse(fs.readFileSync(path.resolve(__dirname, "..", "join-notifier.json"), "utf8"))
-        return config;
-    } catch (error) {
-        return {};
-    }
-}
-
-const config = readConfigFile();
+const config = readConfigFile(path.resolve(__dirname, "..", "join-notifier.json"));
 app(config);

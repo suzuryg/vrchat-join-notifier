@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { program } from "commander";
 import { app } from "./app/app";
+import { readConfigFile } from "./app/util/util";
 
 const version = JSON.parse(fs.readFileSync(path.resolve(__dirname, "..", "package.json"), "utf8")).version;
 
@@ -10,20 +11,30 @@ program
 
 program
     .description("VRChat join notifier")
+    .option("-c, --config <filePath>", "specific config file path(you can overwrite from cli)")
     .option("-s, --specific-names <name...>", "specific notification names(with another notification sound)")
     .option("-se, --specific-exec <command>", "exec command when match specific names. Replace %{{names}} in command text with join user names")
-    .option("-i, --interval <sec>", "specify check interval", "2")
+    .option("-i, --interval <sec>", "specify check interval")
     .option("-nt, --no-toast", "prevent toast notification")
-    .option("-nx, --no-xsoverlay", "prevent xsoverlay notification")
+    .option("-nx, --no-xsoverlay", "prevent XSOverlay notification")
+    .option("-xv, --xsoverlay-volume <volume>", "XSOverlay notification volume (0~1)")
+    .option("-xo, --xsoverlay-opacity <opacity>", "XSOverlay notification opacity (0~1)")
+    .option("-xt, --xsoverlay-timeout <sec>", "XSOverlay notification disappear time (sec)")
 
 export async function run(argv: any): Promise<void> {
     program.parse(argv);
 
-    app({
-        interval: program["interval"],
-        specificNames: program["specificNames"],
-        specificExec: program["specificExec"],
-        isToast: program["toast"],
-        isXSOverlay: program["xsoverlay"]
-    });
+    let config: any = {};
+    if (program["config"]) config = readConfigFile(path.resolve(__dirname, "..", "join-notifier.json"));
+
+    config.interval = program["interval"];
+    config.specificNames = program["specificNames"];
+    config.specificExec = program["specificExec"];
+    config.isToast = program["toast"];
+    config.isXSOverlay = program["xsoverlay"];
+    config.xsoverlayVolume = program["xsoverlayVolume"];
+    config.xsoverlayOpacity= program["xsoverlayOpacity"];
+    config.xsoverlayTimeout= program["xsoverlayOpacity"];
+
+    app(config);
 }
