@@ -1,7 +1,7 @@
 {
     "interval": "2",
-    "specificNames": ["myFriendName1", "myFriendNAme2"],
-    "specificExec": "echo ${{names}}",
+    "specificNames": null,
+    "specificExec": null,
     "isToast": true,
     "isXSOverlay": true,
     "xsoverlayVolume": "0.5",
