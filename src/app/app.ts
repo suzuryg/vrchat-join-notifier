@@ -36,8 +36,8 @@ const defaultParameterObject: AppParameterObject = {
     isToast: true,
     isXSOverlay: true,
     xsoverlayVolume: "0.5",
-    xsoverlayOpacity: "1",
-    xsoverlayTimeout: "3"
+    xsoverlayOpacity: "1.0",
+    xsoverlayTimeout: "3.0"
 }
 
 export function app(param: AppParameterObject): void {

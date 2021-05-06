@@ -58,3 +58,5 @@ $ vn
   prevent toast notification
 * `-nx, --no-xsoverlay`
   prevent xsoverlay notification
+
+and other options. see `-h` option.
