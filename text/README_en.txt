@@ -57,9 +57,9 @@ Specifies the amount of time between when the XSOverlay notification is displaye
     "specificExec": "echo ${{names}}",
     "isToast": true,
     "isXSOverlay": true,
-    "xsoverlayVolume": "0.5";
-    "xsoverlayOpacity": "1.0";
-    "xsoverlayTimeout": "3.0";
+    "xsoverlayVolume": "0.5",
+    "xsoverlayOpacity": "1.0",
+    "xsoverlayTimeout": "3.0",
 }
 
 # Disclaimer

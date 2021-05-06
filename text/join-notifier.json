@@ -1,7 +1,10 @@
 {
     "interval": "2",
-    "specificNames": null,
-    "specificExec": null,
+    "specificNames": ["myFriendName1", "myFriendNAme2"],
+    "specificExec": "echo ${{names}}",
     "isToast": true,
-    "isXSOverlay": true
+    "isXSOverlay": true,
+    "xsoverlayVolume": "0.5",
+    "xsoverlayOpacity": "1.0",
+    "xsoverlayTimeout": "3.0"
 }

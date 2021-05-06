@@ -34,7 +34,7 @@ export async function run(argv: any): Promise<void> {
     config.isXSOverlay = program["xsoverlay"];
     config.xsoverlayVolume = program["xsoverlayVolume"];
     config.xsoverlayOpacity= program["xsoverlayOpacity"];
-    config.xsoverlayTimeout= program["xsoverlayOpacity"];
+    config.xsoverlayTimeout= program["xsoverlayTimeout"];
 
     app(config);
 }

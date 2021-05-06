@@ -37,7 +37,7 @@ export function showXSOverlayNotification(message: string, title: string, param:
     console.log("param", param);
     const messageObject: any = Object.assign(JSON.parse(JSON.stringify(defaultMessageobject)), param);
     (Object.keys(param) as (keyof XSOverlayNotificationParameterObject)[]).forEach(key => {
-        if (param[key] ?? false) messageObject[key] = (param[key]);
+        if (param[key] != null) messageObject[key] = (param[key]);
     })
     messageObject.content = message;
     messageObject.title = title;

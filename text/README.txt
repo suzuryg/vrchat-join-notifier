@@ -56,9 +56,9 @@ XSOverlay通知が表示されてから閉じるまでの時間を指定しま�
     "specificExec": "echo ${{names}}",
     "isToast": true,
     "isXSOverlay": true,
-    "xsoverlayVolume": "0.5";
-    "xsoverlayOpacity": "1.0";
-    "xsoverlayTimeout": "3.0";
+    "xsoverlayVolume": "0.5",
+    "xsoverlayOpacity": "1.0",
+    "xsoverlayTimeout": "3.0",
 }
 
 # 免責事項

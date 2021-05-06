@@ -57,7 +57,7 @@ export function app(param: AppParameterObject): void {
 function generateAppConfig (param: AppParameterObject): AppConfig {
     const config: any = JSON.parse(JSON.stringify(defaultParameterObject));
     (Object.keys(param) as (keyof AppParameterObject)[]).forEach(key => {
-        if (param[key] ?? false) config[key] = param[key];
+        if (param[key] != null) config[key] = param[key];
     })
     return config;
 }

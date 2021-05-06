@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint \"./src/**/*.ts\"",
-    "deploy:win": "npm run deploy:win:exe && npm run deploy:win:text && npm run deploy:win:zip",
+    "deploy:win": "npm run deploy:win:text && npm run deploy:win:exe && npm run deploy:win:zip",
+    "deploy:win:text": "cpx --clean ./text/** ./vrchat-join-notifier/",
     "deploy:win:exe": "nexe lib/winExe.js --target 12.18.2 -o vrchat-join-notifier/vrchat-join-notifier.exe",
-    "deploy:win:text": "cpx ./text/** ./vrchat-join-notifier/",
     "deploy:win:zip": "powershell compress-archive vrchat-join-notifier/ vrchat-join-notifier.zip -Force"
   },
   "bin": {
