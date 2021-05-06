@@ -11,7 +11,7 @@ program
 
 program
     .description("VRChat join notifier")
-    .option("-c, --config <filePath>", "specific config file path(you can overwrite from cli)")
+    .option("-c, --config <filePath>", "specific config file path(you can overwrite from cli. Exclusive other options)")
     .option("-s, --specific-names <name...>", "specific notification names(with another notification sound)")
     .option("-se, --specific-exec <command>", "exec command when match specific names. Replace %{{names}} in command text with join user names")
     .option("-i, --interval <sec>", "specify check interval")
@@ -25,16 +25,21 @@ export async function run(argv: any): Promise<void> {
     program.parse(argv);
 
     let config: any = {};
-    if (program["config"]) config = readConfigFile(path.resolve(__dirname, "..", "join-notifier.json"));
-
-    config.interval = program["interval"];
-    config.specificNames = program["specificNames"];
-    config.specificExec = program["specificExec"];
-    config.isToast = program["toast"];
-    config.isXSOverlay = program["xsoverlay"];
-    config.xsoverlayVolume = program["xsoverlayVolume"];
-    config.xsoverlayOpacity= program["xsoverlayOpacity"];
-    config.xsoverlayTimeout= program["xsoverlayTimeout"];
+    if (program["config"]) {
+        config = readConfigFile(path.resolve(program["config"]));
+    } else {
+        config.interval =         program["interval"];
+        config.specificNames =    program["specificNames"];
+        config.specificExec =     program["specificExec"];
+        config.isToast =          program["toast"];
+        config.isXSOverlay =      program["xsoverlay"];
+        config.xsoverlayVolume =  program["xsoverlayVolume"];
+        config.xsoverlayOpacity = program["xsoverlayOpacity"];
+        config.xsoverlayTimeout = program["xsoverlayTimeout"];
+    }
+    console.log("c", config);
+    console.log("prgoram", program)
+    console.log(config)
 
     app(config);
 }
