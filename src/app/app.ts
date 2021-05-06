@@ -41,10 +41,7 @@ const defaultParameterObject: AppParameterObject = {
 }
 
 export function app(param: AppParameterObject): void {
-    console.log("param", param);
     const config = generateAppConfig(param);
-    console.log("config", config);
-
     showInitNotification(config);
 
     const interval = param.interval ? parseInt(param.interval, 10) : 2;
