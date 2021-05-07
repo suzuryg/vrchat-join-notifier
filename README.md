@@ -13,10 +13,14 @@ $ ./bin/run -s mySpecialFriendName -se "echo %{{names}}"
 
 コマンドライン上で利用する場合、Node.js が必要です。
 
-依存モジュールの一部が GitHub Packages で公開されています。 `npm install` を実行する前に、以下のコマンドを実行してください。
+依存モジュールの一部が GitHub Packages で公開されています。 `npm install` を実行する前に、 以下の手順が必要です。
+
+1. GitHubアカウントの個人アクセストークンを準備します。トークンの権限は`read:packages` を含む必要があります。[参考](https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token)
+2. .npmrc に以下の記述を追加します。
+[参考](https://docs.github.com/ja/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
 
 ```
-$ npm config set @kamakiri01:registry=https://npm.pkg.github.com # 初回のみ
+//npm.pkg.github.com/:_authToken=YOUR_TOKEN
 ```
 
 ```
