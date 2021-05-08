@@ -29,7 +29,7 @@ export interface AppParameterObject {
     xsoverlayTimeout?: string;
 }
 
-const defaultParameterObject: AppParameterObject = {
+const defaultAppConfig: AppConfig = {
     interval: "2",
     specificNames: null!,
     specificExec: null!,
@@ -52,7 +52,7 @@ export function app(param: AppParameterObject): void {
 }
 
 function generateAppConfig (param: AppParameterObject): AppConfig {
-    const config: any = JSON.parse(JSON.stringify(defaultParameterObject));
+    const config: any = JSON.parse(JSON.stringify(defaultAppConfig));
     (Object.keys(param) as (keyof AppParameterObject)[]).forEach(key => {
         if (param[key] != null) config[key] = param[key];
     })
