@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import { AppParameterObject } from "../app";
+import { parse } from "jsonc-parser";
 
 export function generateFormulatedTime(): string {
     const dateOption: Intl.DateTimeFormatOptions = {
@@ -11,7 +12,7 @@ export function generateFormulatedTime(): string {
 
 export function readConfigFile(configFilePath: string): AppParameterObject {
     try {
-        const config: AppParameterObject = JSON.parse(fs.readFileSync(configFilePath, "utf8"))
+        const config: AppParameterObject = parse(fs.readFileSync(configFilePath, "utf8"));
         return config;
     } catch (error) {
         return {};

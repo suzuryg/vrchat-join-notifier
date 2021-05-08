@@ -29,7 +29,7 @@ export interface AppParameterObject {
     xsoverlayTimeout?: string;
 }
 
-const defaultParameterObject: AppParameterObject = {
+const defaultAppConfig: AppConfig = {
     interval: "2",
     specificNames: null!,
     specificExec: null!,
@@ -52,7 +52,7 @@ export function app(param: AppParameterObject): void {
 }
 
 function generateAppConfig (param: AppParameterObject): AppConfig {
-    const config: any = JSON.parse(JSON.stringify(defaultParameterObject));
+    const config: any = JSON.parse(JSON.stringify(defaultAppConfig));
     (Object.keys(param) as (keyof AppParameterObject)[]).forEach(key => {
         if (param[key] != null) config[key] = param[key];
     })
@@ -113,12 +113,12 @@ function showJoinNotification(joinUserNames: string[], isSpecific: boolean, conf
     console.log(time + " join: " + joinUserNames);
 
     if (config.isToast)
-        showToast(message, "join notice", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
+        showToast(message, "join", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
 
     if (config.isXSOverlay)
         showXSOverlayNotification(
             message,
-            "join notice",
+            "join",
             pickXSOverlayParameter(config));
 }
 

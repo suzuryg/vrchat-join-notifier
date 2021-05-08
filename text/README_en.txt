@@ -25,42 +25,11 @@ Edit join-notifier.json in the same folder.
 The configuration changes will be applied after restarting the tool.
 Configuration items can be omitted. If there is no configuration file, the default settings will be applied.
 
-- interval
-Specifies the interval between updates; anything less than 1 second will increase the CPU load.
+# Other
 
-- specificNames
-Specifies the user name to use a different notification sound. (Changing the sound is only effective for toast notifications)
+The display position of XSOverlay's in-VR notifications can be changed from XSOverlay's settings screen.
+Launch SteamVR and XSOverlay and go to XSOverlay -> Settings -> Notifications -> OffsetX/OffsetY/OffsetZ.
 
-- specificExec
-Specifies the command to be executed when the user name specified by specificNames is notified.
-
-- isToast
-Switches toast notification on and off.
-
-- isXSOverlay
-Toggles XSOverlay notifications on and off.
-
-- xsoverlayVolume
-Changes the volume of XSOverlay notifications. (0.0~1.0)
-
-- xsoverlayOpacity
-Specifies the transparency of the XSOverlay notification. (0.0~1.0) xsoverlayOpacity
-
-- xsoverlayTimeout
-Specifies the amount of time between when the XSOverlay notification is displayed and when it is closed. (seconds)
-
-## Example Config
-
-{
-    "interval": "2",
-    "specificNames": ["myFriendName1", "myFriendNAme2"],
-    "specificExec": "echo ${{names}}",
-    "isToast": true,
-    "isXSOverlay": true,
-    "xsoverlayVolume": "0.5",
-    "xsoverlayOpacity": "1.0",
-    "xsoverlayTimeout": "3.0",
-}
 
 # Disclaimer
 
