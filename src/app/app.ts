@@ -113,12 +113,12 @@ function showJoinNotification(joinUserNames: string[], isSpecific: boolean, conf
     console.log(time + " join: " + joinUserNames);
 
     if (config.isToast)
-        showToast(message, "join notice", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
+        showToast(message, "join", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
 
     if (config.isXSOverlay)
         showXSOverlayNotification(
             message,
-            "join notice",
+            "join",
             pickXSOverlayParameter(config));
 }
 
