@@ -13,8 +13,6 @@
     "./typings/powertoast.d.ts"
   ],
   "include": [
-    "./src/**/*",
-    "node_modules/vrchat-activity-viewer/lib/**/*"
-
+    "./src/**/*"
   ]
 }
