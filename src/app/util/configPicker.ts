@@ -1,5 +1,5 @@
-import { AppConfig } from "../app";
 import { XSOverlayNotificationParameterObject } from "../notifier/xsoverlayNotification";
+import { AppConfig } from "../types/AppConfig";
 
 export function pickXSOverlayParameter(config: AppConfig): XSOverlayNotificationParameterObject {
     return {

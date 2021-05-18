@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { AppParameterObject } from "../app";
 import { parse } from "jsonc-parser";
+import { AppParameterObject } from "../types/AppConfig";
 
 export function generateFormulatedTime(): string {
     const dateOption: Intl.DateTimeFormatOptions = {
