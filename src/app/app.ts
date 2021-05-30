@@ -48,8 +48,7 @@ function generateAppConfig (param: AppParameterObject): AppConfig {
 function cronFunc(timelist: TimeList, config: AppConfig): TimeList {
     const filePath = findLatestVRChatLogFullPath();
     const latestLog = parseVRChatLog(
-        fs.readFileSync(path.resolve(filePath), "utf8"),
-        filePath);
+        fs.readFileSync(path.resolve(filePath), "utf8"), false);
 
     timelist.latestJoined = updateNewJoin(latestLog, timelist.latestJoined, config);
     return timelist;
