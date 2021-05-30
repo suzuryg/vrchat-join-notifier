@@ -1,33 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
-import { execSync } from "child_process";
-import { ActivityType, MoveActivityLog, findLatestVRChatLogFullPath, parseVRChatLog } from "@kamakiri01/vrchat-activity-viewer";
-import { generateFormulatedTime } from "./util/util";
-import { showToast, ToastAudioType } from "./notifier/toast";
-import { showXSOverlayNotification } from "./notifier/xsoverlayNotification";
-import { pickXSOverlayParameter } from "./util/configPicker";
-
-export interface AppConfig {
-    interval: string;
-    specificNames: string[];
-    specificExec: string;
-    isToast: boolean;
-    isXSOverlay: boolean;
-    xsoverlayVolume: string;
-    xsoverlayOpacity: string;
-    xsoverlayTimeout: string;
-}
-
-export interface AppParameterObject {
-    interval?: string;
-    specificNames?: string[];
-    specificExec?: string;
-    isToast?: boolean;
-    isXSOverlay?: boolean;
-    xsoverlayVolume?: string;
-    xsoverlayOpacity?: string;
-    xsoverlayTimeout?: string;
-}
+import { findLatestVRChatLogFullPath, parseVRChatLog } from "@kamakiri01/vrchat-activity-viewer";
+import { updateNewJoin } from "./updater";
+import { AppConfig, AppParameterObject } from "./types/AppConfig";
+import { showInitNotification } from "./notifier/notifier";
 
 const defaultAppConfig: AppConfig = {
     interval: "2",
@@ -40,15 +16,25 @@ const defaultAppConfig: AppConfig = {
     xsoverlayTimeout: "3.0"
 }
 
+export interface TimeList {
+    latestJoined: number;
+}
+
 export function app(param: AppParameterObject): void {
     const config = generateAppConfig(param);
-    showInitNotification(config);
+    const interval = parseInt(config.interval, 10)
+    let timeList = initUnixTimeList();
 
-    const interval = param.interval ? parseInt(param.interval, 10) : 2;
-    let latestJoinedUnixTime = Date.now();
+    showInitNotification(config);
     setInterval(() => {
-        latestJoinedUnixTime = cronFunc(latestJoinedUnixTime, config);
+        timeList = cronFunc(timeList, config);
     }, interval * 1000);
+}
+
+function initUnixTimeList(): TimeList {
+    return {
+        latestJoined: Date.now()
+    }
 }
 
 function generateAppConfig (param: AppParameterObject): AppConfig {
@@ -59,70 +45,12 @@ function generateAppConfig (param: AppParameterObject): AppConfig {
     return config;
 }
 
-function cronFunc(latestJoinedUnixTime: number, config: AppConfig): number {
+function cronFunc(timelist: TimeList, config: AppConfig): TimeList {
     const filePath = findLatestVRChatLogFullPath();
     const latestLog = parseVRChatLog(
         fs.readFileSync(path.resolve(filePath), "utf8"),
         filePath);
-    const newJoinLog = latestLog
-        .filter(e => e.activityType === ActivityType.Join)
-        .filter(e => e.date > latestJoinedUnixTime);
 
-    if (newJoinLog.length > 0) {
-        const joinUserNames = newJoinLog.map(e => (<MoveActivityLog>e).userData.userName);
-        const isSpecific = isIncludeSpecificNames(joinUserNames, config.specificNames || []);
-        showJoinNotification(joinUserNames, isSpecific, config);
-
-        if (isSpecific && config.specificExec) {
-            execSpecific(joinUserNames, config.specificExec);
-        }
-
-        return newJoinLog.sort((a, b) => {
-            return a.date - b.date;
-        }).slice(-1)[0].date;
-    }
-    return latestJoinedUnixTime;
-}
-
-function isIncludeSpecificNames(names: string[], specificNames: string[]): boolean {
-    const lowerNames = names.map(name => name.toLowerCase());
-    const matchedNames = specificNames.filter(specificName => lowerNames.find(name => name.indexOf(specificName.toLowerCase()) !== -1));
-    return matchedNames.length > 0;
-}
-
-function showInitNotification(config: AppConfig): void {
-    const message = "running";
-    const title = "VRChat Join Notifier";
-
-    console.log("notifier running", config.specificNames ? "specificNames: " + config.specificNames.join(" ") : "");
-
-    if (config.isToast)
-        showToast(message, title);
-
-    if (config.isXSOverlay)
-        showXSOverlayNotification(
-            message,
-            title,
-            pickXSOverlayParameter(config));
-}
-
-function showJoinNotification(joinUserNames: string[], isSpecific: boolean, config: AppConfig): void {
-    const message = joinUserNames.join(", ");
-
-    const time = generateFormulatedTime();
-    console.log(time + " join: " + joinUserNames);
-
-    if (config.isToast)
-        showToast(message, "join", isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
-
-    if (config.isXSOverlay)
-        showXSOverlayNotification(
-            message,
-            "join",
-            pickXSOverlayParameter(config));
-}
-
-function execSpecific(joinUserNames: string[], execCommand: string) {
-    const stdout = execSync(execCommand.replace("%{{names}}", joinUserNames.join(" ")));
-    console.log(stdout.toString());
+    timelist.latestJoined = updateNewJoin(latestLog, timelist.latestJoined, config);
+    return timelist;
 }
