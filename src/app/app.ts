@@ -1,8 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
 import { findLatestVRChatLogFullPath, parseVRChatLog } from "@kamakiri01/vrchat-activity-viewer";
-import { updateNewJoin } from "./updater";
 import { AppConfig, AppParameterObject } from "./types/AppConfig";
+import { checkNewJoin, checkNewLeave, findNewEnter } from "./updater";
+import { comsumeNewJoin, consumeNewLeave } from "./consumer";
 import { showInitNotification } from "./notifier/notifier";
 
 const defaultAppConfig: AppConfig = {
@@ -16,24 +17,32 @@ const defaultAppConfig: AppConfig = {
     xsoverlayTimeout: "3.0"
 }
 
-export interface TimeList {
-    latestJoined: number;
+export interface AppContext {
+    config: AppConfig;
+    latestCheckTime: number;
+    currentUserNames: string[];
+    newJoinedUserNames: string[];
+    newLeftUserNames: string[];
 }
 
 export function app(param: AppParameterObject): void {
     const config = generateAppConfig(param);
     const interval = parseInt(config.interval, 10)
-    let timeList = initUnixTimeList();
+    const context = initContext(config);
 
     showInitNotification(config);
     setInterval(() => {
-        timeList = cronFunc(timeList, config);
+        cronFunc(context);
     }, interval * 1000);
 }
 
-function initUnixTimeList(): TimeList {
+function initContext(config: AppConfig): AppContext {
     return {
-        latestJoined: Date.now()
+        config,
+        latestCheckTime: Date.now(),
+        currentUserNames: [],
+        newJoinedUserNames: [],
+        newLeftUserNames: []
     }
 }
 
@@ -45,11 +54,17 @@ function generateAppConfig (param: AppParameterObject): AppConfig {
     return config;
 }
 
-function cronFunc(timelist: TimeList, config: AppConfig): TimeList {
+function cronFunc(context: AppContext): void {
     const filePath = findLatestVRChatLogFullPath();
     const latestLog = parseVRChatLog(
         fs.readFileSync(path.resolve(filePath), "utf8"), false);
 
-    timelist.latestJoined = updateNewJoin(latestLog, timelist.latestJoined, config);
-    return timelist;
+    if (findNewEnter(latestLog, context)) context.currentUserNames = [];
+
+    checkNewJoin(latestLog, context);
+    checkNewLeave(latestLog, context);
+    context.latestCheckTime = Date.now();
+
+    comsumeNewJoin(context);
+    consumeNewLeave(context);
 }
