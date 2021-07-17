@@ -3,6 +3,7 @@
  */
  export interface AppParameterObject {
     interval?: string;
+    notificationTypes?: string[];
     specificNames?: string[];
     specificExec?: string;
     isToast?: boolean;
@@ -17,6 +18,7 @@
  */
 export interface AppConfig {
     interval: string;
+    notificationTypes: string[];
     specificNames: string[];
     specificExec: string;
     isToast: boolean;

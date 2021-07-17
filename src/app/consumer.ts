@@ -2,26 +2,25 @@ import { execSync } from "child_process";
 import { AppContext } from "./app";
 import { showNotification } from "./notifier/notifier";
 
-export function comsumeNewJoin(context: AppContext) {
-    context.currentUserNames = context.currentUserNames.concat(context.newJoinedUserNames);
-    const isSpecific = isIncludeSpecificNames(context.newJoinedUserNames, context.config.specificNames || []);
+export function comsumeNewJoin(context: AppContext): void {
+    if (context.newJoinUserNames.length === 0) return;
+
+    const isSpecific = isIncludeSpecificNames(context.newJoinUserNames, context.config.specificNames || []);
     if (isSpecific && context.config.specificExec) {
-        execSpecific(context.newJoinedUserNames, context.config.specificExec);
+        execSpecific(context.newJoinUserNames, context.config.specificExec);
     }
-    showNotification("join", context.newJoinedUserNames, isSpecific, context.config);
+    showNotification("join", context.newJoinUserNames, isSpecific, context.config);
+    context.newJoinUserNames = [];
 }
 
-export function consumeNewLeave(context: AppContext) {
-    context.currentUserNames = context.currentUserNames.filter(name => !context.newLeftUserNames.includes(name));
-    if (context.currentUserNames.length == 0) {
-        return; // no notice when leave instance myself
+export function consumeNewLeave(context: AppContext): void {
+    if (context.newLeaveUserNames.length == 0) return;
+    if (!!context.userName && context.newLeaveUserNames.indexOf(context.userName) !== -1) {
+        console.log("self leave");
+        return; // self leave
     }
-
-    const isSpecific = isIncludeSpecificNames(context.newLeftUserNames, context.config.specificNames || []);
-    if (isSpecific && context.config.specificExec) {
-        execSpecific(context.newLeftUserNames, context.config.specificExec);
-    }
-    showNotification("leave", context.newLeftUserNames, isSpecific, context.config);
+    showNotification("leave", context.newLeaveUserNames, false, context.config);
+    context.newLeaveUserNames = [];
 }
 
 function isIncludeSpecificNames(names: string[], specificNames: string[]): boolean {

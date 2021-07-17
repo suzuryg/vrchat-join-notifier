@@ -1,13 +1,14 @@
 import * as path from "path";
 import * as fs from "fs";
-import { findLatestVRChatLogFullPath, parseVRChatLog } from "@kamakiri01/vrchat-activity-viewer";
+import { findLatestVRChatLogFullPath, parseVRChatLog, ActivityLog } from "vrchat-activity-viewer";
 import { AppConfig, AppParameterObject } from "./types/AppConfig";
-import { checkNewJoin, checkNewLeave, findNewEnter } from "./updater";
+import { checkNewJoin, checkNewLeave, readUserName } from "./updater";
 import { comsumeNewJoin, consumeNewLeave } from "./consumer";
 import { showInitNotification } from "./notifier/notifier";
 
 const defaultAppConfig: AppConfig = {
     interval: "2",
+    notificationTypes: ["join"],
     specificNames: null!,
     specificExec: null!,
     isToast: true,
@@ -19,10 +20,10 @@ const defaultAppConfig: AppConfig = {
 
 export interface AppContext {
     config: AppConfig;
+    userName: string | undefined; // ツールを利用するユーザ名。ログから見つからない場合、 undefined
     latestCheckTime: number;
-    currentUserNames: string[];
-    newJoinedUserNames: string[];
-    newLeftUserNames: string[];
+    newJoinUserNames: string[];
+    newLeaveUserNames: string[];
 }
 
 export function app(param: AppParameterObject): void {
@@ -39,32 +40,40 @@ export function app(param: AppParameterObject): void {
 function initContext(config: AppConfig): AppContext {
     return {
         config,
+        userName: undefined,
         latestCheckTime: Date.now(),
-        currentUserNames: [],
-        newJoinedUserNames: [],
-        newLeftUserNames: []
+        newJoinUserNames: [],
+        newLeaveUserNames: []
     }
 }
 
-function generateAppConfig (param: AppParameterObject): AppConfig {
+function generateAppConfig(param: AppParameterObject): AppConfig {
     const config: any = JSON.parse(JSON.stringify(defaultAppConfig));
     (Object.keys(param) as (keyof AppParameterObject)[]).forEach(key => {
         if (param[key] != null) config[key] = param[key];
     })
+    // TODO: notificationTypes が増えたら type を切る
+    if (config.notificationTypes.filter((e: string) => {return e !== "join" && e !== "leave";}).length > 0)
+        console.log("unknown config [notificationTypes] found, " + config.notificationTypes);
     return config;
 }
 
 function cronFunc(context: AppContext): void {
-    const filePath = findLatestVRChatLogFullPath();
-    const latestLog = parseVRChatLog(
-        fs.readFileSync(path.resolve(filePath), "utf8"), false);
+    const latestLog = getLatestLog();
+    if (!latestLog) return;
 
-    if (findNewEnter(latestLog, context)) context.currentUserNames = [];
-
+    if (!context.userName) readUserName(latestLog, context);
     checkNewJoin(latestLog, context);
     checkNewLeave(latestLog, context);
-    context.latestCheckTime = Date.now();
 
     comsumeNewJoin(context);
     consumeNewLeave(context);
+}
+
+function getLatestLog(): ActivityLog[] | null {
+    const filePath: string | null = findLatestVRChatLogFullPath();
+    if (!filePath) return null; // 参照できるログファイルがない
+
+    return parseVRChatLog(
+        fs.readFileSync(path.resolve(filePath), "utf8"), false);
 }
