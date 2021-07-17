@@ -11,6 +11,7 @@ program
 
 program
     .description("VRChat join notifier")
+    .option("-t, --notification-types <type...>", "specific notification type, you can choose join or/and leave")
     .option("-c, --config <filePath>", "specific config file path(you can overwrite from cli. Exclusive other options)")
     .option("-s, --specific-names <name...>", "specific notification names(with another notification sound)")
     .option("-se, --specific-exec <command>", "exec command when match specific names. Replace %{{names}} in command text with join user names")
@@ -28,14 +29,15 @@ export async function run(argv: any): Promise<void> {
     if (program["config"]) {
         config = readConfigFile(path.resolve(program["config"]));
     } else {
-        config.interval =         program["interval"];
-        config.specificNames =    program["specificNames"];
-        config.specificExec =     program["specificExec"];
-        config.isToast =          program["toast"];
-        config.isXSOverlay =      program["xsoverlay"];
-        config.xsoverlayVolume =  program["xsoverlayVolume"];
-        config.xsoverlayOpacity = program["xsoverlayOpacity"];
-        config.xsoverlayTimeout = program["xsoverlayTimeout"];
+        config.interval =          program["interval"];
+        config.notificationTypes = program["notificationTypes"];
+        config.specificNames =     program["specificNames"];
+        config.specificExec =      program["specificExec"];
+        config.isToast =           program["toast"];
+        config.isXSOverlay =       program["xsoverlay"];
+        config.xsoverlayVolume =   program["xsoverlayVolume"];
+        config.xsoverlayOpacity =  program["xsoverlayOpacity"];
+        config.xsoverlayTimeout =  program["xsoverlayTimeout"];
     }
 
     app(config);
