@@ -1,7 +1,7 @@
 {
   "name": "vrchat-join-notifier",
-  "version": "0.0.8",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Notify when someone joins the same instance",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -20,7 +20,7 @@
   "author": "kamakiri01",
   "license": "MIT",
   "dependencies": {
-    "vrchat-activity-viewer": "^5.0.0",
+    "vrchat-activity-viewer": "^5.1.0",
     "commander": "^6.2.0",
     "jsonc-parser": "^3.0.0",
     "powertoast": "^1.2.3"

@@ -16,7 +16,7 @@ export function comsumeNewJoin(context: AppContext): void {
 export function consumeNewLeave(context: AppContext): void {
     if (context.newLeaveUserNames.length == 0) return;
     if (!!context.userName && context.newLeaveUserNames.indexOf(context.userName) !== -1) {
-        console.log("self leave");
+        context.newLeaveUserNames = [];
         return; // self leave
     }
     showNotification("leave", context.newLeaveUserNames, false, context.config);

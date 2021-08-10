@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { findLatestVRChatLogFullPath, parseVRChatLog, ActivityLog } from "vrchat-activity-viewer";
 import { AppConfig, AppParameterObject } from "./types/AppConfig";
-import { checkNewJoin, checkNewLeave, readUserName } from "./updater";
+import { checkNewJoin, checkNewLeave, findOwnUserName } from "./updater";
 import { comsumeNewJoin, consumeNewLeave } from "./consumer";
 import { showInitNotification } from "./notifier/notifier";
 
@@ -20,7 +20,7 @@ const defaultAppConfig: AppConfig = {
 
 export interface AppContext {
     config: AppConfig;
-    userName: string | undefined; // ツールを利用するユーザ名。ログから見つからない場合、 undefined
+    userName: string | undefined; // ツールを利用するユーザのVRChat名。ログから見つからない場合、 undefined
     latestCheckTime: number;
     newJoinUserNames: string[];
     newLeaveUserNames: string[];
@@ -33,7 +33,7 @@ export function app(param: AppParameterObject): void {
 
     showInitNotification(config);
     setInterval(() => {
-        cronFunc(context);
+        loop(context);
     }, interval * 1000);
 }
 
@@ -58,13 +58,13 @@ function generateAppConfig(param: AppParameterObject): AppConfig {
     return config;
 }
 
-function cronFunc(context: AppContext): void {
+function loop(context: AppContext): void {
     const latestLog = getLatestLog();
     if (!latestLog) return;
 
-    if (!context.userName) readUserName(latestLog, context);
-    checkNewJoin(latestLog, context);
-    checkNewLeave(latestLog, context);
+    if (!context.userName) findOwnUserName(latestLog, context);
+    if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context);
+    if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context);
 
     comsumeNewJoin(context);
     consumeNewLeave(context);

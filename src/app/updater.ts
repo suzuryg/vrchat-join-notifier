@@ -1,8 +1,10 @@
 import { ActivityLog, ActivityType, AuthenticationActivityLog, MoveActivityLog } from "vrchat-activity-viewer";
 import { AppContext } from "./app";
 
-export function readUserName(latestLog: ActivityLog[], context: AppContext): void {
-    const userName = (latestLog.find(e => e.activityType === ActivityType.Authentication) as AuthenticationActivityLog)?.userName;
+export function findOwnUserName(latestLog: ActivityLog[], context: AppContext): void {
+    const userName =
+        (latestLog.find(e => e.activityType === ActivityType.Authentication) as AuthenticationActivityLog | undefined)?.userName ??
+        (latestLog.filter(e => e.activityType === ActivityType.Join) as MoveActivityLog[]).find(e => e.userData.access === "local")?.userData.userName;
     if (userName) context.userName = userName;
 }
 
