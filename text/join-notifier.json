@@ -9,7 +9,7 @@
      * 通知内容を指定します。 "join" "leave" のいずれか、または両方を指定できます。
      * Specify the notification type. You can specify either "join", "leave", or both.
      */
-    "notificationTypes": ["joins"],
+    "notificationTypes": ["join"],
 
     /**
      * 別の通知音を使うユーザ名を指定します。（音の変更はトースト通知のみ有効）
