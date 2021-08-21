@@ -6,8 +6,15 @@
     "interval": "2",
 
     /**
+     * 通知内容を指定します。 "join" "leave" のいずれか、または両方を指定できます。
+     * Specify the notification type. You can specify either "join", "leave", or both.
+     */
+    "notificationTypes": ["join"],
+
+    /**
      * 別の通知音を使うユーザ名を指定します。（音の変更はトースト通知のみ有効）
      * Specifies the user name to use a different notification sound. (Changing the sound is only effective for toast notifications)
+     * example: ["tanaka", "suzuki", "sato"]
      */
     "specificNames": null,
 
@@ -19,14 +26,14 @@
     "specificExec": null,
 
     /**
-     * トースト通知のON/OFFを切り替えます。
-     * Switches toast notification on and off.
+     * トースト通知のON/OFFを切り替えます。 (true or false)
+     * Switches toast notification on and off. (true or false)
      */
     "isToast": true,
 
     /**
-     * XSOverlay通知のON/OFFを切り替えます。
-     * Toggles XSOverlay notifications on and off.
+     * XSOverlay通知のON/OFFを切り替えます。 (true or false)
+     * Switches XSOverlay notification on and off. (true or false)
      */
     "isXSOverlay": true,
 
@@ -38,7 +45,7 @@
 
     /**
      * XSOverlay通知の透過を指定します。（0.0~1.0）
-     * Specifies the transparency of the XSOverlay notification. (0.0~1.0) xsoverlayOpacity.
+     * Specifies the transparency of the XSOverlay notification. (0.0~1.0) 
      */
     "xsoverlayOpacity": "1.0",
 
