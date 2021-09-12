@@ -11,6 +11,7 @@
     xsoverlayVolume?: string;
     xsoverlayOpacity?: string;
     xsoverlayTimeout?: string;
+    verbose?: boolean;
 }
 
 /**
@@ -26,4 +27,5 @@ export interface AppConfig {
     xsoverlayVolume: string;
     xsoverlayOpacity: string;
     xsoverlayTimeout: string;
+    verbose: boolean;
 }

@@ -15,7 +15,8 @@ const defaultAppConfig: AppConfig = {
     isXSOverlay: true,
     xsoverlayVolume: "0.5",
     xsoverlayOpacity: "1.0",
-    xsoverlayTimeout: "3.0"
+    xsoverlayTimeout: "3.0",
+    verbose: false
 }
 
 export interface AppContext {
@@ -59,15 +60,21 @@ function generateAppConfig(param: AppParameterObject): AppConfig {
 }
 
 function loop(context: AppContext): void {
-    const latestLog = getLatestLog();
-    if (!latestLog) return;
+    try {
+        const latestLog = getLatestLog();
+        if (!latestLog) return;
 
-    if (!context.userName) findOwnUserName(latestLog, context);
-    if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context);
-    if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context);
+        if (!context.userName) findOwnUserName(latestLog, context);
+        if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context);
+        if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context);
 
-    comsumeNewJoin(context);
-    consumeNewLeave(context);
+        comsumeNewJoin(context);
+        consumeNewLeave(context);
+    } catch (error) {
+        if (!context.config.verbose) return;
+        console.log("ERR", error);
+    }
+
 }
 
 function getLatestLog(): ActivityLog[] | null {
