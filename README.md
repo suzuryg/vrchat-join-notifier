@@ -1,7 +1,7 @@
 # VRChat Join Notifier
 
-VRChat を起動中、同じインスタンスへの join/leave を通知するコマンドラインツールです。
-windows 向け単体実行ファイルも Release しています。
+VRChat を起動中、同じインスタンスへの join/leave を通知する node.js コマンドラインツールです。
+windows 向け単体実行ファイルを Release しています。
 
 ## Usage
 
@@ -54,3 +54,8 @@ $ vn
   prevent xsoverlay notification
 
 and other options. see `-h` option.
+
+### Giving coffee
+
+コーヒー代を受け付けています。
+[VRChatJoinNotifier - Iwanuki S.P.A. - BOOTH](https://iwanuki.booth.pm/items/2947584)
