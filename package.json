@@ -1,6 +1,6 @@
 {
   "name": "vrchat-join-notifier",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Notify when someone joins the same instance",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,10 @@
     "lint": "eslint \"./src/**/*.ts\"",
     "deploy:win": "npm run deploy:win:text && npm run deploy:win:exe && npm run deploy:win:zip",
     "deploy:win:text": "cpx --clean ./text/** ./vrchat-join-notifier/",
-    "deploy:win:exe": "nexe lib/winExe.js --target 12.18.2 -o vrchat-join-notifier/vrchat-join-notifier.exe",
+    "deploy:win:exe": "npm run deploy:win:exe:core && npm run deploy:win:exe:launcher && npm run deploy:win:exe:copy",
+    "deploy:win:exe:core": "nexe lib/winExe.js --target 12.18.2 -o launcherApp/notifierCore.exe",
+    "deploy:win:exe:launcher": "msbuild.exe launcherApp/launcher.csproj",
+    "deploy:win:exe:copy": "shx cp ./launcherApp/vrchat-join-notifier.exe ./launcherApp/vrchatjoinnotifier.vrmanifest ./vrchat-join-notifier/",
     "deploy:win:zip": "powershell compress-archive vrchat-join-notifier/ vrchat-join-notifier.zip -Force"
   },
   "bin": {
