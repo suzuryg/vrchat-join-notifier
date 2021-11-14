@@ -13,6 +13,7 @@ export function checkNewJoin(latestLog: ActivityLog[], context: AppContext): voi
     const newJoinLog = latestLog
         .filter(e => e.activityType === ActivityType.Join)
         .filter(e => e.date > context.latestCheckTime);
+    console.log("newJoinLog", newJoinLog);
 
     if (newJoinLog.length > 0) {
         context.newJoinUserNames = newJoinLog.map(e => (<MoveActivityLog>e).userData.userName);
@@ -25,6 +26,7 @@ export function checkNewLeave(latestLog: ActivityLog[], context: AppContext): vo
     const newLeaveLog = latestLog
         .filter(e => e.activityType === ActivityType.Leave)
         .filter(e => e.date > context.latestCheckTime);
+        console.log("newLeaveLog", newLeaveLog);
 
     if (newLeaveLog.length > 0) {
         context.newLeaveUserNames = newLeaveLog.map(e => (<MoveActivityLog>e).userData.userName);

@@ -5,6 +5,7 @@ import { AppConfig, AppParameterObject } from "./types/AppConfig";
 import { checkNewJoin, checkNewLeave, findOwnUserName } from "./updater";
 import { comsumeNewJoin, consumeNewLeave } from "./consumer";
 import { showInitNotification } from "./notifier/notifier";
+import { generateFormulatedTime } from "./util/util";
 
 const defaultAppConfig: AppConfig = {
     interval: "2",
@@ -68,6 +69,8 @@ function loop(context: AppContext): void {
         if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context);
         if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context);
 
+        const time = generateFormulatedTime();
+        console.log(time + " " + context.latestCheckTime, context.newJoinUserNames, context.newLeaveUserNames);
         comsumeNewJoin(context);
         consumeNewLeave(context);
     } catch (error) {

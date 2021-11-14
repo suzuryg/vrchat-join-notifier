@@ -9,7 +9,7 @@ export function comsumeNewJoin(context: AppContext): void {
     if (isSpecific && context.config.specificExec) {
         execSpecific(context.newJoinUserNames, context.config.specificExec);
     }
-    showNotification("join", context.newJoinUserNames, isSpecific, context.config);
+    // showNotification("join", context.newJoinUserNames, isSpecific, context.config);
     context.newJoinUserNames = [];
 }
 
@@ -19,7 +19,7 @@ export function consumeNewLeave(context: AppContext): void {
         context.newLeaveUserNames = [];
         return; // self leave
     }
-    showNotification("leave", context.newLeaveUserNames, false, context.config);
+    // showNotification("leave", context.newLeaveUserNames, false, context.config);
     context.newLeaveUserNames = [];
 }
 
