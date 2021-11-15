@@ -6,7 +6,7 @@ windows 向け単体実行ファイルを Release しています。
 ## Usage
 
 ```
-$ ./bin/run -t join"
+$ ./bin/run -t join
 ```
 
 ### Install
