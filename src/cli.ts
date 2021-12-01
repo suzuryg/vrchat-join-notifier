@@ -15,6 +15,7 @@ program
     .option("-c, --config <filePath>", "specific config file path(you can overwrite from cli. Exclusive other options)")
     .option("-s, --specific-names <name...>", "specific notification names(with another notification sound)")
     .option("-se, --specific-exec <command>", "exec command when match specific names. Replace %{{names}} in command text with join user names")
+    .option("-ge, --general-exec <command>", "exec command when any user joined. Replace %{{names}} in command text with join user names")
     .option("-i, --interval <sec>", "specify check interval")
     .option("-nt, --no-toast", "prevent toast notification")
     .option("-nx, --no-xsoverlay", "prevent XSOverlay notification")
@@ -34,6 +35,7 @@ export async function run(argv: any): Promise<void> {
         config.notificationTypes = program["notificationTypes"];
         config.specificNames =     program["specificNames"];
         config.specificExec =      program["specificExec"];
+        config.generalExec =      program["generalExec"];
         config.isToast =           program["toast"];
         config.isXSOverlay =       program["xsoverlay"];
         config.xsoverlayVolume =   program["xsoverlayVolume"];

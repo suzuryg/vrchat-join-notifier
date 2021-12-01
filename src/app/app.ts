@@ -11,6 +11,7 @@ const defaultAppConfig: AppConfig = {
     notificationTypes: ["join"],
     specificNames: null!,
     specificExec: null!,
+    generalExec: null!,
     isToast: true,
     isXSOverlay: true,
     xsoverlayVolume: "0.5",

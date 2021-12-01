@@ -6,6 +6,7 @@
     notificationTypes?: string[];
     specificNames?: string[];
     specificExec?: string;
+    generalExec?: string;
     isToast?: boolean;
     isXSOverlay?: boolean;
     xsoverlayVolume?: string;
@@ -22,6 +23,7 @@ export interface AppConfig {
     notificationTypes: string[];
     specificNames: string[];
     specificExec: string;
+    generalExec: string;
     isToast: boolean;
     isXSOverlay: boolean;
     xsoverlayVolume: string;

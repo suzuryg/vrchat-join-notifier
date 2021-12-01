@@ -5,9 +5,11 @@ import { showNotification } from "./notifier/notifier";
 export function comsumeNewJoin(context: AppContext): void {
     if (context.newJoinUserNames.length === 0) return;
 
+    if (context.config.generalExec) exec(context.config.generalExec, context.newJoinUserNames);
+
     const isSpecific = isIncludeSpecificNames(context.newJoinUserNames, context.config.specificNames || []);
     if (isSpecific && context.config.specificExec) {
-        execSpecific(context.newJoinUserNames, context.config.specificExec);
+        exec(context.config.specificExec, context.newJoinUserNames);
     }
     showNotification("join", context.newJoinUserNames, isSpecific, context.config);
     context.newJoinUserNames = [];
@@ -29,7 +31,7 @@ function isIncludeSpecificNames(names: string[], specificNames: string[]): boole
     return matchedNames.length > 0;
 }
 
-function execSpecific(userNames: string[], execCommand: string) {
+function exec(execCommand: string, userNames: string[]) {
     const stdout = execSync(execCommand.replace("%{{names}}", userNames.join(" ")));
     console.log(stdout.toString());
 }

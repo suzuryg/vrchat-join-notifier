@@ -26,6 +26,13 @@
     "specificExec": null,
 
     /**
+     * 任意のユーザ名を通知したとき、実行するコマンドを指定します。
+     * Specifies the command to be executed when any user name is notified.
+     * example: "echo ${{names}}" -> $ echo myFriendName1 myFriendNAme2
+     */
+     "generalExec": null,
+
+    /**
      * トースト通知のON/OFFを切り替えます。 (true or false)
      * Switches toast notification on and off. (true or false)
      */
