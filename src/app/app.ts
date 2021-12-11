@@ -11,6 +11,7 @@ const defaultAppConfig: AppConfig = {
     notificationTypes: ["join"],
     specificNames: null!,
     specificExec: null!,
+    generalExec: null!,
     isToast: true,
     isXSOverlay: true,
     xsoverlayVolume: "0.5",
@@ -64,9 +65,13 @@ function loop(context: AppContext): void {
         const latestLog = getLatestLog();
         if (!latestLog) return;
 
+        // NOTE: ログファイルの書き込みと読み込みタイミングがバッティングした場合、最新ログを取りこぼすケースが考えられる
+        // notifierが取得するログの範囲を最新時刻より手前までの範囲に制限し、バッティングによる取りこぼしを抑制する
+        // boundaryTimeより後のログはnotifierに届かないため、latestCheckTimeがboundaryTimeを追い越すことは無い
+        const boundaryTime = Date.now() - 500; // バッティング回避マージンとして0.5sec確保する
         if (!context.userName) findOwnUserName(latestLog, context);
-        if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context);
-        if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context);
+        if (context.config.notificationTypes.indexOf("join") !== -1) checkNewJoin(latestLog, context, boundaryTime);
+        if (context.config.notificationTypes.indexOf("leave") !== -1) checkNewLeave(latestLog, context, boundaryTime);
 
         comsumeNewJoin(context);
         consumeNewLeave(context);

@@ -1,6 +1,6 @@
 {
   "name": "vrchat-join-notifier",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Notify when someone joins the same instance",
   "main": "index.js",
   "scripts": {
