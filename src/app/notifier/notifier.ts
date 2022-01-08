@@ -10,6 +10,9 @@ export function showNotification(label: string, userNames: string[], isSpecific:
     const time = generateFormulatedTime();
     console.log(time + " " + label + ": " + userNames);
 
+    const fs = require("fs");
+    fs.appendFile(config.logFile, time + " " + label + ": " + userNames + "\n", (err:any) => { if (err) throw err;});
+
     if (config.isToast)
         showToast(message, label, isSpecific ? ToastAudioType.Reminder : ToastAudioType.Default);
 
