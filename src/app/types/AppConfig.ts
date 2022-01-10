@@ -14,6 +14,8 @@
     xsoverlayTimeout?: string;
     verbose?: boolean;
     logFile?: string;
+    logLength?: number;
+    archiveFile?: string;
 }
 
 /**
@@ -32,4 +34,6 @@ export interface AppConfig {
     xsoverlayTimeout: string;
     verbose: boolean;
     logFile: string;
+    logLength: number;
+    archiveFile: string;
 }

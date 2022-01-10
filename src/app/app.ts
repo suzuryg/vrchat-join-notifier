@@ -17,7 +17,10 @@ const defaultAppConfig: AppConfig = {
     xsoverlayVolume: "0.5",
     xsoverlayOpacity: "1.0",
     xsoverlayTimeout: "3.0",
-    verbose: false
+    verbose: false,
+    logFile: "log.txt",
+    logLength: 50,
+    archiveFile: "archive.txt"
 }
 
 export interface AppContext {
